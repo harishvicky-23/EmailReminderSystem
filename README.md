@@ -140,7 +140,7 @@ const api = axios.create({
 
 **Harish**  
 📫  harishvicky2005@gmail.com
-🖥️ GitHub: [Rahul-Sundarraj](https://github.com/harishvicky-23/EmailReminderSystem)
+🖥️ GitHub: [harishvicky-23](https://github.com/harishvicky-23/EmailReminderSystem)
 
 ---
 
