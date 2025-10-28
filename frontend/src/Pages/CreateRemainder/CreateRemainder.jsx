@@ -10,7 +10,7 @@ function CreateRemainder() {
     const navigate = useNavigate()
 
     const [formData , setFormData] = useState({
-        from:"fftgosr@gmail.com",
+        from:"aidsboyssm@gmail.com",
         title:"",
         to:"",
         subject:"",

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://email-remainder.onrender.com/"
+  baseURL: "https://emailremindersystem-rad4.onrender.com/"
 });
 
 export default api;
