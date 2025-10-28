@@ -46,7 +46,7 @@ email-remainder-system/
 │   ├── models/
 │   └── package.json
 │
-├── MailRemainder/
+├── frontend/
 │   ├── src/
 │   │   ├── App.js
 │   │   ├── components/
@@ -138,9 +138,9 @@ const api = axios.create({
 
 ## 🧑‍💻 Author
 
-**Rahul**  
-📫  sundarrajrahul@gmail.com
-🖥️ GitHub: [Rahul-Sundarraj](https://github.com/Rahul-Sundarraj/Email-Remainder)
+**Harish**  
+📫  harishvicky2005@gmail.com
+🖥️ GitHub: [Rahul-Sundarraj](https://github.com/harishvicky-23/EmailReminderSystem)
 
 ---
 
