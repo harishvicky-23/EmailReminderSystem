@@ -24,6 +24,7 @@
 
 .bodyContainer {
   flex: 1;
+  overflow: hidden;
 }
 
 .title {
@@ -31,12 +32,18 @@
   font-weight: 600;
   color: #333;
   margin: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .mailBody {
   font-size: 0.9rem;
   color: #666;
   margin-top: 4px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .buttons {
@@ -50,122 +57,17 @@
   cursor: pointer;
   padding: 6px;
   border-radius: 6px;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
 }
 
 .iconButton:hover {
   background: #f3f3f3;
+  transform: scale(1.1);
 }
 
-/* ----------- Confirmation Modal ----------- */
-.confirmOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  backdrop-filter: blur(3px);
-  animation: fadeIn 0.25s ease-in-out;
-}
-
-.confirmBox {
-  background: #fff;
-  border-radius: 14px;
-  padding: 24px 32px;
-  width: 320px;
-  text-align: center;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
-  animation: slideUp 0.25s ease;
-}
-
-.confirmBox h3 {
-  margin: 0;
-  font-size: 1.1rem;
-  color: #222;
-}
-
-.confirmBox p {
-  color: #555;
-  font-size: 0.9rem;
-  margin: 10px 0 20px;
-}
-
-.confirmButtons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.cancelBtn,
-.deleteBtn {
-  flex: 1;
-  padding: 8px 14px;
-  margin: 0 4px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.cancelBtn {
-  background: #e0e0e0;
-  color: #333;
-}
-
-.cancelBtn:hover {
-  background: #d6d6d6;
-}
-
-.deleteBtn {
-  background: #e63946;
-  color: #fff;
-}
-
-.deleteBtn:hover {
-  background: #d62828;
-}
-
-.deletedText {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #2ecc71;
-  margin: 0;
-  animation: fadePop 0.3s ease;
-}
-
-@keyframes fadePop {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+/* Subtle fade-out effect for deletion (optional use in future) */
+.fadeOut {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
