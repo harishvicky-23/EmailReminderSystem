@@ -34,7 +34,7 @@ function Mails() {
         const getSentMails = async ()=>{
             await api
                 .post('/mails' , {
-                    from : 'fftgosr@gmail.com',
+                    from : 'aidsboyssm@gmail.com',
                     isSent : true
                 })
                 .then(res => {setSentMails(res.data)})
@@ -46,7 +46,7 @@ function Mails() {
         const getUpcomingMails = async ()=>{
             await api
                 .post('/mails' , {
-                    from : 'fftgosr@gmail.com',
+                    from : 'aidsboyssm@gmail.com',
                     isSent:false
                 })
                 .then(res => { setUpcomingMails(res.data) })
