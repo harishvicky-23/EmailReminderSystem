@@ -1,46 +1,63 @@
 .mailCard {
-    background-color: #1010220a;
-    border : 1px solid rgb(201, 201, 201);
-    margin: 20px 20px 20px 20px;
-    padding: 5px 10px 10px 10px;
-    border-radius: 10px;
-    font-family: 'Times New Roman', Times, serif;
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 0.75rem;
+  padding: 1rem 1.2rem;
+  margin: 0.8rem 0;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
-.mailCard .bodyContianer{
-    margin-left: 10px;
-    flex:1;
+.mailCard:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-color: #007bff4a;
 }
 
-.body{
-    margin-top: 5px;
-    font-size: .85rem;
-}
-.title{
-    font-size: 1.2rem;
-}
-
-.buttons{
-    display: flex;
-    gap : .7rem;
-    margin-right: .4rem;
+.iconBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
 }
 
-.buttons > button{
-    border : none;
-    background-color: transparent;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 1.1rem;
-    transition: all 0.3 ease;
+.bodyContainer {
+  flex: 1;
+  margin-left: 1rem;
 }
 
-.buttons > button:hover{
-    background-color: rgba(58, 58, 58, 0.077);
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.3);
+.title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.2rem;
 }
 
+.mailBody {
+  color: #555;
+  font-size: 0.9rem;
+}
 
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
 
+.iconButton {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 2.4rem;
+  height: 2.4rem;
+  transition: all 0.2s ease;
+}
+
+.iconButton:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: scale(1.05);
+}
