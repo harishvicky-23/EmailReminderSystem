@@ -1,99 +1,121 @@
-import React , {useState} from 'react'
+import React, { useState } from 'react'
 import style from './EditRemainder.module.css'
 import Icon from '../../Components/Icon'
-import { useNavigate ,useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'
 import api from '../../api/axios'
+
 function formatDateForInput(date) {
-  const d = new Date(date);
-  const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
-  return local.toISOString().slice(0, 16);
+  const d = new Date(date)
+  const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
+  return local.toISOString().slice(0, 16)
 }
 
-
-
-
 function EditRemainder() {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const data = location.state.data
 
-    const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    ...data,
+    time: formatDateForInput(data.time)
+  })
 
-    const location = useLocation();
-
-    const data = location.state.data;
-
-    const [formData , setFormData] = useState({
-        ...data,
-        time : formatDateForInput(data.time)
+  const handleOnChange = e => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     })
+  }
 
-    function handelOnChange (e  ){
-        setFormData({
-            ...formData , 
-            [e.target.name] : e.target.value
+  const handleOnSubmit = e => {
+    e.preventDefault()
+
+    const editData = async () => {
+      await api
+        .post('/editremainder', {
+          ...formData,
+          time: new Date(formData.time)
         })
-
+        .then(res => console.log(res))
+        .catch(e => console.log(`Error: ${e}`))
     }
 
-    function handleOnSubmit(e){
-        e.preventDefault();
-        console.log(formData)
-
-        const editData = async () =>{
-            await api
-            .post('/editremainder' ,{
-                ...formData,
-                time : new Date(formData.time)
-            }).then(res => {console.log(res)})
-            .catch(e => {console.log(`Error .....${e}`)})
-        }
-        navigate('/' , {state : {isSend : true , message : 'Edited'}})
-
-        editData()
-    }
-
-
+    navigate('/', { state: { isSend: true, message: 'Edited' } })
+    editData()
+  }
 
   return (
     <main className={style.mainContainer}>
-        <h2 className={style.title}>Edit Remainder</h2>
+      <h2 className={style.title}>
+        <Icon name="edit_calendar" color="#007bff" size="28px" /> Edit Reminder
+      </h2>
 
-        <form onSubmit={handleOnSubmit} className={style.formContainer} method='get'>
-            <label htmlFor='title'>Title</label>
-            <div >
-                <Icon name='title' color="grey" className ={style.icons} />
-                <input onChange={handelOnChange} className={style.emailInput}
-                value={formData.title} type="text" id='title' name='title'
-            placeholder='Your Title'/>
-            </div>
+      <form onSubmit={handleOnSubmit} className={style.formContainer}>
+        <div className={style.inputGroup}>
+          <Icon name="title" color="#007bff" />
+          <input
+            onChange={handleOnChange}
+            value={formData.title}
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter reminder title"
+            required
+          />
+        </div>
 
-            <label htmlFor='mail'>Email Address</label>
-            <div >
-                <Icon name='mail' color="grey" className ={style.icons} />
-                <input onChange={handelOnChange} className={style.emailInput}
-                value={formData.to} type="email" id='mail' name='mail'
-            placeholder='recipient@example.com'/>
-            </div>
-            
-            <label htmlFor='subject'>Subject</label>
-            <div>
-                <Icon name='subject' color="grey" className ={style.icons} />
-                <input onChange={handelOnChange} className={style.subjectInput} 
-                value={formData.subject} type='text' id='subject' name='subject' placeholder='Your email subject' />
-            </div>
-            <label htmlFor='message'>Message</label>
-            <textarea onChange={handelOnChange} value={formData.message} 
-            className={style.messageInput} id='message' name='message' 
-            placeholder='Write your reminder message here...'></textarea>
+        <div className={style.inputGroup}>
+          <Icon name="mail" color="#007bff" />
+          <input
+            onChange={handleOnChange}
+            value={formData.to}
+            type="email"
+            id="to"
+            name="to"
+            placeholder="Recipient email"
+            required
+          />
+        </div>
 
-            <label htmlFor='time'>Date & Time</label>
-            <div>
-                <Icon name='calendar_today' color="grey" className ={style.icons} />
-                <input name ='time' id='time' onChange={handelOnChange} type='datetime-local'
-                value={formData.time} className={style.dateTimeInput} />
+        <div className={style.inputGroup}>
+          <Icon name="subject" color="#007bff" />
+          <input
+            onChange={handleOnChange}
+            value={formData.subject}
+            type="text"
+            id="subject"
+            name="subject"
+            placeholder="Email subject"
+          />
+        </div>
 
-            </div>
+        <div className={style.textAreaGroup}>
+          <Icon name="chat" color="#007bff" />
+          <textarea
+            onChange={handleOnChange}
+            value={formData.message}
+            id="message"
+            name="message"
+            placeholder="Write your reminder message..."
+          ></textarea>
+        </div>
 
-            <button type='submit' className={style.submitButton}>Schedule Remainder</button>
-        </form>
+        <div className={style.inputGroup}>
+          <Icon name="calendar_month" color="#007bff" />
+          <input
+            name="time"
+            id="time"
+            onChange={handleOnChange}
+            type="datetime-local"
+            value={formData.time}
+            required
+          />
+        </div>
+
+        <button type="submit" className={style.submitButton}>
+          <Icon name="save" color="white" /> Update Reminder
+        </button>
+      </form>
     </main>
   )
 }
