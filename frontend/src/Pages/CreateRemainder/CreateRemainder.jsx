@@ -1,90 +1,117 @@
-import React , {useState} from 'react'
+import React, { useState } from 'react'
 import style from './CreateRemainder.module.css'
 import Icon from '../../Components/Icon'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 import api from '../../api/axios'
 
-
 function CreateRemainder() {
+  const navigate = useNavigate()
 
-    const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    from: 'aidsboyssm@gmail.com',
+    title: '',
+    to: '',
+    subject: '',
+    message: '',
+    time: ''
+  })
 
-    const [formData , setFormData] = useState({
-        from:"aidsboyssm@gmail.com",
-        title:"",
-        to:"",
-        subject:"",
-        message:"",
-        time:""
+  const handleOnChange = e => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
     })
+  }
 
-    function handelOnChange (e){
-        setFormData({
-            ...formData , 
-            [e.target.name] : e.target.value
+  const handleOnSubmit = e => {
+    e.preventDefault()
+
+    const addData = async () => {
+      await api
+        .post('/createremainder', {
+          ...formData,
+          time: new Date(formData.time)
         })
-
+        .then(res => console.log(res))
+        .catch(e => console.log(`Error: ${e}`))
     }
 
-    function handleOnSubmit(e){
-        e.preventDefault();
-        console.log(formData)
+    navigate('/', { state: { isSend: true } })
+    addData()
+  }
 
-        const addData = async () =>{
-            await api
-            .post('/createremainder' ,{
-                ...formData,
-                time : new Date(formData.time)
-            }).then(res => {console.log(res)})
-            .catch(e => {console.log(`Error .....${e}`)})
-        }
-        navigate('/' , {state : {isSend : true}})
-
-        addData()
-        
-    }
   return (
     <main className={style.mainContainer}>
-        <h2 className={style.title}>Schedule a Remainder</h2>
+      <h2 className={style.title}>
+        <Icon name="schedule" color="#007bff" size="28px" /> Schedule a Reminder
+      </h2>
 
-        <form onSubmit={handleOnSubmit} className={style.formContainer} method='get'>
-            <label htmlFor='title'>Title</label>
-            <div >
-                <Icon name='title' color="grey" className ={style.icons} />
-                <input onChange={handelOnChange} className={style.emailInput}
-                value={formData.title} type="text" id='title' name='title'
-            placeholder='Your Title'/>
-            </div>
+      <form onSubmit={handleOnSubmit} className={style.formContainer}>
+        <div className={style.inputGroup}>
+          <Icon name="title" color="#007bff" />
+          <input
+            onChange={handleOnChange}
+            value={formData.title}
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter reminder title"
+            required
+          />
+        </div>
 
-            <label htmlFor='to'>Email Address</label>
-            <div >
-                <Icon name='mail' color="grey" className ={style.icons} />
-                <input onChange={handelOnChange} className={style.emailInput}
-                value={formData.mail} type="email" id='to' name='to'
-            placeholder='recipient@example.com'/>
-            </div>
-            
-            <label htmlFor='subject'>Subject</label>
-            <div>
-                <Icon name='subject' color="grey" className ={style.icons} />
-                <input onChange={handelOnChange} className={style.subjectInput} 
-                value={formData.subject} type='text' id='subject' name='subject' placeholder='Your email subject' />
-            </div>
-            <label htmlFor='message'>Message</label>
-            <textarea onChange={handelOnChange} value={formData.message} 
-            className={style.messageInput} id='message' name='message' 
-            placeholder='Write your reminder message here...'></textarea>
+        <div className={style.inputGroup}>
+          <Icon name="mail" color="#007bff" />
+          <input
+            onChange={handleOnChange}
+            value={formData.to}
+            type="email"
+            id="to"
+            name="to"
+            placeholder="Recipient email"
+            required
+          />
+        </div>
 
-            <label htmlFor='time'>Date & Time</label>
-            <div>
-                <Icon name='calendar_today' color="grey" className ={style.icons} />
-                <input name ='time' id='time' onChange={handelOnChange} type='datetime-local'
-                value={formData.time} className={style.dateTimeInput} />
+        <div className={style.inputGroup}>
+          <Icon name="subject" color="#007bff" />
+          <input
+            onChange={handleOnChange}
+            value={formData.subject}
+            type="text"
+            id="subject"
+            name="subject"
+            placeholder="Email subject"
+          />
+        </div>
 
-            </div>
+        <div className={style.textAreaGroup}>
+          <Icon name="chat" color="#007bff" />
+          <textarea
+            onChange={handleOnChange}
+            value={formData.message}
+            id="message"
+            name="message"
+            placeholder="Write your reminder message..."
+          ></textarea>
+        </div>
 
-            <button type='submit' className={style.submitButton}>Schedule Remainder</button>
-        </form>
+        <div className={style.inputGroup}>
+          <Icon name="calendar_month" color="#007bff" />
+          <input
+            name="time"
+            id="time"
+            onChange={handleOnChange}
+            type="datetime-local"
+            value={formData.time}
+            required
+          />
+        </div>
+
+        <button type="submit" className={style.submitButton}>
+          <Icon name="send" color="white" /> Schedule Reminder
+        </button>
+      </form>
     </main>
   )
 }
