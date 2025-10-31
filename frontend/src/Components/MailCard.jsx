@@ -36,9 +36,8 @@ function MailCard({ data }) {
       // Show "Deleted!" for 1s before closing modal + refreshing
       setTimeout(() => {
         setShowConfirm(false)
-        window.location.reload()
-      }, 0)
-    } catch (err) {
+        if (typeof data.onDeleted === 'function') data.onDeleted(data._id)}, 0)
+      } catch (err) {
       console.error('Error deleting mail:', err)
       setLoading(false)
     }
