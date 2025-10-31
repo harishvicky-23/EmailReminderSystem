@@ -1,68 +1,92 @@
 .container {
   background: #ffffff;
   border-radius: 1rem;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   width: 90%;
   max-width: 850px;
   margin: 2rem auto;
   padding: 1.5rem 2rem;
+  font-family: "Poppins", sans-serif;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.2rem;
 }
 
 .title {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: #007bff;
 }
 
-/* ---- TABS ---- */
-.tabs {
+/* --- Modern toggle --- */
+.toggleContainer {
+  position: relative;
   display: flex;
-  gap: 10px;
-  background: #f1f3f5;
-  padding: 5px;
-  border-radius: 10px;
+  background: #f0f0f0;
+  border-radius: 30px;
+  padding: 4px;
+  width: 220px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.tabBtn {
-  padding: 8px 20px;
+.toggleButton {
+  flex: 1;
+  border: none;
+  background: transparent;
   font-size: 0.95rem;
   font-weight: 600;
-  background: transparent;
-  border: none;
-  border-radius: 8px;
   color: #555;
+  padding: 8px 0;
+  z-index: 2;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
 }
 
-.tabBtn:hover {
-  background: rgba(0, 123, 255, 0.08);
-  color: #007bff;
-}
-
-.tabBtn.active {
-  background: #007bff;
+.toggleButton.active {
   color: #fff;
-  box-shadow: 0px 3px 6px rgba(0, 123, 255, 0.3);
 }
 
-/* ---- MAILS ---- */
-.mailList {
+.toggleIndicator {
+  position: absolute;
+  top: 3px;
+  width: 50%;
+  height: calc(100% - 6px);
+  background: #007bff;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.toggleIndicator.left {
+  left: 3px;
+}
+
+.toggleIndicator.right {
+  left: calc(50% - 3px);
+}
+
+.statusBar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
+  color: #555;
+  font-size: 1rem;
+}
+
+.listContainer {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.emptyMsg {
+.emptyText {
   text-align: center;
-  color: #777;
+  color: #888;
   font-size: 1rem;
   padding: 2rem 0;
 }
