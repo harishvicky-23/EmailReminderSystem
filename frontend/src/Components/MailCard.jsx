@@ -19,26 +19,30 @@ function MailCard({ data }) {
   const navigate = useNavigate()
   const [showConfirm, setShowConfirm] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [deleted, setDeleted] = useState(false)
 
   const handleEdit = () => navigate('/editremainder', { state: { data } })
-
   const handleDeleteClick = () => setShowConfirm(true)
+  const cancelDelete = () => setShowConfirm(false)
 
   const confirmDelete = async () => {
     setLoading(true)
     try {
       await api.delete(`/deleteremainder/${data._id}`)
       console.log('Mail deleted successfully')
-      setShowConfirm(false)
-      window.location.reload()
+      setDeleted(true)
+      setLoading(false)
+
+      // Show "Deleted!" for 1s before closing modal + refreshing
+      setTimeout(() => {
+        setShowConfirm(false)
+        window.location.reload()
+      }, 1000)
     } catch (err) {
       console.error('Error deleting mail:', err)
-    } finally {
       setLoading(false)
     }
   }
-
-  const cancelDelete = () => setShowConfirm(false)
 
   const name = data.isSent ? 'check_circle' : 'schedule'
   const color = data.isSent ? 'limegreen' : '#007bff'
@@ -70,24 +74,30 @@ function MailCard({ data }) {
       {showConfirm && (
         <div className={style.confirmOverlay}>
           <div className={style.confirmBox}>
-            <h3>Delete this reminder?</h3>
-            <p>This action cannot be undone.</p>
-            <div className={style.confirmButtons}>
-              <button
-                className={style.cancelBtn}
-                onClick={cancelDelete}
-                disabled={loading}
-              >
-                Cancel
-              </button>
-              <button
-                className={style.deleteBtn}
-                onClick={confirmDelete}
-                disabled={loading}
-              >
-                {loading ? 'Deleting…' : 'Delete'}
-              </button>
-            </div>
+            {!deleted ? (
+              <>
+                <h3>Delete this reminder?</h3>
+                <p>This action cannot be undone.</p>
+                <div className={style.confirmButtons}>
+                  <button
+                    className={style.cancelBtn}
+                    onClick={cancelDelete}
+                    disabled={loading}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className={style.deleteBtn}
+                    onClick={confirmDelete}
+                    disabled={loading}
+                  >
+                    {loading ? 'Deleting…' : 'Delete'}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <h3 className={style.deletedText}>✅ Deleted!</h3>
+            )}
           </div>
         </div>
       )}
