@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import style from './MailCard.module.css'
 import Icon from './Icon'
 import { useNavigate } from 'react-router-dom'
@@ -17,29 +17,18 @@ function formatDateForInput(date) {
 
 function MailCard({ data }) {
   const navigate = useNavigate()
-  const [showConfirm, setShowConfirm] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [deleted, setDeleted] = useState(false)
 
   const handleEdit = () => navigate('/editremainder', { state: { data } })
-  const handleDeleteClick = () => setShowConfirm(true)
-  const cancelDelete = () => setShowConfirm(false)
 
-  const confirmDelete = async () => {
-    setLoading(true)
+  const handleDelete = async () => {
     try {
       await api.delete(`/deleteremainder/${data._id}`)
       console.log('Mail deleted successfully')
-      setDeleted(true)
-      setLoading(false)
-
-      // Show "Deleted!" for 1s before closing modal + refreshing
-      setTimeout(() => {
-        setShowConfirm(false)
-        if (typeof data.onDeleted === 'function') data.onDeleted(data._id)}, 0)
-      } catch (err) {
+      // Instantly refresh the page
+      window.location.reload()
+    } catch (err) {
       console.error('Error deleting mail:', err)
-      setLoading(false)
+      alert('Failed to delete mail. Please try again.')
     }
   }
 
@@ -47,60 +36,27 @@ function MailCard({ data }) {
   const color = data.isSent ? 'limegreen' : '#007bff'
 
   return (
-    <>
-      <div className={style.mailCard}>
-        <div className={style.iconBox}>
-          <Icon name={name} color={color} size="26px" />
-        </div>
-        <div className={style.bodyContainer}>
-          <h3 className={style.title}>{data.title}</h3>
-          <p className={style.mailBody}>
-            To: <b>{data.to}</b> — {formatDateForInput(data.time)[0]} at {formatDateForInput(data.time)[1]}
-          </p>
-        </div>
-        {!data.isSent && (
-          <div className={style.buttons}>
-            <button onClick={handleEdit} className={style.iconButton}>
-              <Icon name="edit" color="grey" />
-            </button>
-            <button onClick={handleDeleteClick} className={style.iconButton}>
-              <Icon name="delete" color="#e63946" />
-            </button>
-          </div>
-        )}
+    <div className={style.mailCard}>
+      <div className={style.iconBox}>
+        <Icon name={name} color={color} size="26px" />
       </div>
-
-      {showConfirm && (
-        <div className={style.confirmOverlay}>
-          <div className={style.confirmBox}>
-            {!deleted ? (
-              <>
-                <h3>Delete this reminder?</h3>
-                <p>This action cannot be undone.</p>
-                <div className={style.confirmButtons}>
-                  <button
-                    className={style.cancelBtn}
-                    onClick={cancelDelete}
-                    disabled={loading}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    className={style.deleteBtn}
-                    onClick={confirmDelete}
-                    disabled={loading}
-                  >
-                    {loading ? 'Deleting…' : 'Delete'}
-                  </button>
-                </div>
-              </>
-            ) : (
-              <h3 className={style.deletedText}>✅ Deleted!</h3>
-            )}
-          </div>
+      <div className={style.bodyContainer}>
+        <h3 className={style.title}>{data.title}</h3>
+        <p className={style.mailBody}>
+          To: <b>{data.to}</b> — {formatDateForInput(data.time)[0]} at {formatDateForInput(data.time)[1]}
+        </p>
+      </div>
+      {!data.isSent && (
+        <div className={style.buttons}>
+          <button onClick={handleEdit} className={style.iconButton}>
+            <Icon name="edit" color="grey" />
+          </button>
+          <button onClick={handleDelete} className={style.iconButton}>
+            <Icon name="delete" color="#e63946" />
+          </button>
         </div>
       )}
-    </>
+    </div>
   )
 }
 
