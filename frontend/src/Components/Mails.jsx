@@ -1,59 +1,106 @@
-import React, { useState, useEffect } from "react";
-import style from "./Mails.module.css";
-import MailCard from "./MailCard";
-import api from "../api/axios";
+import React, { useEffect, useState, useMemo } from 'react';
+import style from './Mails.module.css';
+import MailCard from './MailCard';
+import Icon from './Icon';
+import api from '../api/axios';
 
 function Mails() {
-  const [view, setView] = useState("upcoming");
-  const [mails, setMails] = useState([]);
+  const [isSent, setIsSent] = useState(false);
+  const [sentMails, setSentMails] = useState([]);
+  const [upcomingMails, setUpcomingMails] = useState([]);
 
-  const fetchMails = async () => {
-    try {
-      const res = await api.get("/getremainders");
-      setMails(res.data || []);
-    } catch (error) {
-      console.error("Error fetching mails:", error);
-    }
-  };
+  const handelUpcomingClick = () => setIsSent(false);
+  const handleSentButton = () => setIsSent(true);
 
   useEffect(() => {
-    fetchMails();
-    const interval = setInterval(fetchMails, 10000); // Refresh every 10 sec
+    const getSentMails = async () => {
+      await api
+        .post('/mails', {
+          from: 'aidsboyssm@gmail.com',
+          isSent: true,
+        })
+        .then((res) => setSentMails(res.data))
+        .catch((e) => console.log('Error fetching sent mails:', e));
+    };
+
+    const getUpcomingMails = async () => {
+      await api
+        .post('/mails', {
+          from: 'aidsboyssm@gmail.com',
+          isSent: false,
+        })
+        .then((res) => setUpcomingMails(res.data))
+        .catch((e) => console.log('Error fetching upcoming mails:', e));
+    };
+
+    getSentMails();
+    getUpcomingMails();
+
+    // Refresh every 20 seconds
+    const interval = setInterval(() => {
+      getSentMails();
+      getUpcomingMails();
+    }, 20000);
+
     return () => clearInterval(interval);
   }, []);
 
-  const filteredMails = mails.filter((mail) =>
-    view === "sent" ? mail.isSent : !mail.isSent
-  );
+  const filteredMails = useMemo(() => {
+    const mails = isSent ? sentMails : upcomingMails;
+    return mails;
+  }, [isSent, sentMails, upcomingMails]);
 
   return (
     <div className={style.container}>
       <div className={style.header}>
         <h2 className={style.title}>Mail Reminders</h2>
-        <div className={style.tabs}>
+
+        {/* Modern toggle switch */}
+        <div className={style.toggleContainer}>
           <button
-            className={`${style.tabBtn} ${view === "upcoming" ? style.active : ""}`}
-            onClick={() => setView("upcoming")}
+            className={`${style.toggleButton} ${!isSent ? style.active : ''}`}
+            onClick={handelUpcomingClick}
           >
             Upcoming
           </button>
           <button
-            className={`${style.tabBtn} ${view === "sent" ? style.active : ""}`}
-            onClick={() => setView("sent")}
+            className={`${style.toggleButton} ${isSent ? style.active : ''}`}
+            onClick={handleSentButton}
           >
             Sent
           </button>
+          <div
+            className={`${style.toggleIndicator} ${
+              isSent ? style.right : style.left
+            }`}
+          />
         </div>
       </div>
 
-      <ul className={style.mailList}>
+      <div className={style.statusBar}>
+        {isSent ? (
+          <>
+            <Icon name="check_circle" color="limegreen" />
+            <h3>{filteredMails.length} Sent</h3>
+          </>
+        ) : (
+          <>
+            <Icon name="notifications" color="blue" />
+            <h3>{filteredMails.length} Upcoming</h3>
+          </>
+        )}
+      </div>
+
+      <ul className={style.listContainer}>
         {filteredMails.length > 0 ? (
-          filteredMails.map((mail, idx) => (
-            <MailCard key={idx} data={mail} />
+          filteredMails.map((item, index) => (
+            <li key={index}>
+              <MailCard data={item} />
+            </li>
           ))
         ) : (
-          <p className={style.emptyMsg}>
-            No {view === "sent" ? "sent" : "upcoming"} mails found.
+          <p className={style.emptyText}>
+            No {isSent ? 'sent' : 'upcoming'} mails found.
           </p>
         )}
       </ul>
