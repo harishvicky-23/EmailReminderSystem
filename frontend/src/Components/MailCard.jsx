@@ -37,7 +37,7 @@ function MailCard({ data }) {
       setTimeout(() => {
         setShowConfirm(false)
         window.location.reload()
-      }, 1000)
+      }, 0)
     } catch (err) {
       console.error('Error deleting mail:', err)
       setLoading(false)
