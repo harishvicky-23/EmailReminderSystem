@@ -130,6 +130,26 @@
   background: #d62828;
 }
 
+.deletedText {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2ecc71;
+  margin: 0;
+  animation: fadePop 0.3s ease;
+}
+
+@keyframes fadePop {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
 @keyframes fadeIn {
   from {
     opacity: 0;
