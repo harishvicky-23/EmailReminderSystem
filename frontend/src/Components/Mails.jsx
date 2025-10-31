@@ -1,74 +1,64 @@
-import React, { useState, useEffect } from 'react'
-import style from './Mails.module.css'
-import MailCard from './MailCard'
-import api from '../api/axios'
+import React, { useState, useEffect } from "react";
+import style from "./Mails.module.css";
+import MailCard from "./MailCard";
+import api from "../api/axios";
 
 function Mails() {
-  const [mailData, setMailData] = useState([])
-  const [view, setView] = useState('upcoming')
+  const [view, setView] = useState("upcoming");
+  const [mails, setMails] = useState([]);
 
   const fetchMails = async () => {
     try {
-      const res = await api.get('/getremainders')
-      setMailData(res.data)
-    } catch (err) {
-      console.log(err)
+      const res = await api.get("/getremainders");
+      setMails(res.data || []);
+    } catch (error) {
+      console.error("Error fetching mails:", error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchMails()
-  }, [])
+    fetchMails();
+    const interval = setInterval(fetchMails, 10000); // Refresh every 10 sec
+    return () => clearInterval(interval);
+  }, []);
 
-  const filteredMails =
-    view === 'upcoming'
-      ? mailData.filter(m => !m.isSent)
-      : mailData.filter(m => m.isSent)
+  const filteredMails = mails.filter((mail) =>
+    view === "sent" ? mail.isSent : !mail.isSent
+  );
 
   return (
     <div className={style.container}>
       <div className={style.header}>
         <h2 className={style.title}>Mail Reminders</h2>
-        <div className={style.toggleContainer}>
-          <div
-            className={`${style.toggleBackground} ${
-              view === 'sent' ? style.right : ''
-            }`}
+        <div className={style.tabs}>
+          <button
+            className={`${style.tabBtn} ${view === "upcoming" ? style.active : ""}`}
+            onClick={() => setView("upcoming")}
           >
-            <div className={style.toggleCircle}></div>
-          </div>
-          <div className={style.toggleLabels}>
-            <span
-              className={`${style.label} ${
-                view === 'upcoming' ? style.active : ''
-              }`}
-              onClick={() => setView('upcoming')}
-            >
-              Upcoming
-            </span>
-            <span
-              className={`${style.label} ${
-                view === 'sent' ? style.active : ''
-              }`}
-              onClick={() => setView('sent')}
-            >
-              Sent
-            </span>
-          </div>
+            Upcoming
+          </button>
+          <button
+            className={`${style.tabBtn} ${view === "sent" ? style.active : ""}`}
+            onClick={() => setView("sent")}
+          >
+            Sent
+          </button>
         </div>
       </div>
 
-      <ul className={style.listContainer}>
+      <ul className={style.mailList}>
         {filteredMails.length > 0 ? (
-          filteredMails.map((mail, i) => <MailCard key={i} data={mail} />)
+          filteredMails.map((mail, idx) => (
+            <MailCard key={idx} data={mail} />
+          ))
         ) : (
-          <p className={style.emptyText}>
-            No {view === 'upcoming' ? 'upcoming' : 'sent'} mails found.
+          <p className={style.emptyMsg}>
+            No {view === "sent" ? "sent" : "upcoming"} mails found.
           </p>
         )}
       </ul>
     </div>
-  )
+  );
 }
 
-export default Mails
+export default Mails;
