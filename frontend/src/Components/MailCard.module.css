@@ -3,61 +3,149 @@
   align-items: center;
   justify-content: space-between;
   background: #ffffff;
-  border: 1px solid #e4e4e7;
-  border-radius: 0.75rem;
-  padding: 1rem 1.2rem;
-  margin: 0.8rem 0;
-  transition: all 0.25s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  padding: 14px 20px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .mailCard:hover {
-  transform: scale(1.01);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  border-color: #007bff4a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
 }
 
 .iconBox {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
+  margin-right: 12px;
 }
 
 .bodyContainer {
   flex: 1;
-  margin-left: 1rem;
 }
 
 .title {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: #222;
-  margin-bottom: 0.2rem;
+  color: #333;
+  margin: 0;
 }
 
 .mailBody {
-  color: #555;
   font-size: 0.9rem;
+  color: #666;
+  margin-top: 4px;
 }
 
 .buttons {
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  gap: 8px;
 }
 
 .iconButton {
+  background: none;
   border: none;
-  background: transparent;
   cursor: pointer;
-  border-radius: 50%;
-  width: 2.4rem;
-  height: 2.4rem;
-  transition: all 0.2s ease;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s;
 }
 
 .iconButton:hover {
-  background: rgba(0, 0, 0, 0.05);
-  transform: scale(1.05);
+  background: #f3f3f3;
+}
+
+/* ----------- Confirmation Modal ----------- */
+.confirmOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(3px);
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.confirmBox {
+  background: #fff;
+  border-radius: 14px;
+  padding: 24px 32px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.25s ease;
+}
+
+.confirmBox h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #222;
+}
+
+.confirmBox p {
+  color: #555;
+  font-size: 0.9rem;
+  margin: 10px 0 20px;
+}
+
+.confirmButtons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancelBtn,
+.deleteBtn {
+  flex: 1;
+  padding: 8px 14px;
+  margin: 0 4px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.cancelBtn {
+  background: #e0e0e0;
+  color: #333;
+}
+
+.cancelBtn:hover {
+  background: #d6d6d6;
+}
+
+.deleteBtn {
+  background: #e63946;
+  color: #fff;
+}
+
+.deleteBtn:hover {
+  background: #d62828;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
