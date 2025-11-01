@@ -50,7 +50,7 @@ email-remainder-system/
 │   ├── src/
 │   │   ├── App.js
 │   │   ├── components/
-|   |   ├──assts/
+|   |   ├── assets/
 │   │   ├── pages/
 │   │   └── utils/
 │   ├── public/
