@@ -46,7 +46,7 @@ email-remainder-system/
 │   ├── models/
 │   └── package.json
 │
-├── MailRemainder/
+├── frontend/
 │   ├── src/
 │   │   ├── App.js
 │   │   ├── components/
@@ -65,13 +65,13 @@ email-remainder-system/
 
 ### 1️⃣ Clone the repository
 ```bash
-git clone https://github.com/Rahul-Sundarraj/email-remainder-system.git
-cd email-remainder-system
+git clone https://github.com/harishvicky-23/EmailReminderSystem.git
+cd EmailReminderSystem
 ```
 
 ### 2️⃣ Backend Setup
 ```bash
-cd MailRemainderBackend
+cd backend
 npm install
 ```
 
@@ -94,9 +94,9 @@ npm run dev
 
 ### 3️⃣ Frontend Setup
 ```bash
-cd ../
+cd frontend
 npm install
-npm run dev
+npm run build
 ```
 
 ---
@@ -123,13 +123,13 @@ npm run dev
 
 ## 🌍 Deployment
 
-- **Frontend** → [Render] (https://email-remainder-1.onrender.com/)
-- **Backend** → [Render](https://email-remainder.onrender.com/)  
+- **Frontend** → [Render](https://emailremindersystem-1.onrender.com)
+- **Backend** → [Render](https://emailremindersystem-rad4.onrender.com)  
 
 Make sure to update your frontend Axios base URL:
 ```js
 const api = axios.create({
-  baseURL: "https://email-remainder.onrender.com/"
+  baseURL: "https://emailremindersystem-rad4.onrender.com"
 });
 
 ```
